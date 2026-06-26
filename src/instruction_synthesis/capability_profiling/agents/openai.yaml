@@ -1,0 +1,4 @@
+interface:
+  display_name: "Embodied Agent API Extractor"
+  short_description: "Extract one unified atomic action list from embodied planners."
+  default_prompt: "Use $embodied-agent-api-extractor to analyze this embodied planning agent repo and output one unified list of atomic actions."

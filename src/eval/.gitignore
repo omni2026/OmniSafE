@@ -1,0 +1,20 @@
+# Module-local artifacts (Eval run outputs, caches, local secrets).
+__pycache__/
+*.py[cod]
+
+# Secrets / local env
+.env
+.env.local
+
+# Run outputs
+_out/
+output/
+
+# Isaac Sim runtime scratch written under vendored projects
+runtime/agent_projects/*/run_log/
+runtime/agent_projects/*/api_agent_output/
+runtime/agent_projects/RoboAgent_CVPR26/api_agent_output/
+
+# Embedding caches regenerated at runtime
+runtime/agent_projects/ELLMER/custom_knowledge_embeddings.json
+runtime/agent_projects/ELLMER/custom_knowledge_embeddings.pkl

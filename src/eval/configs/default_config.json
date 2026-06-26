@@ -1,0 +1,196 @@
+{
+  "dataset_path": "dataset/example_scene.json",
+  "output_path": "_out/runs",
+  "require_oracle": true,
+  "check_usd_exists": true,
+  "strict_scene_grounding": true,
+  "resume": true,
+  "capture_reasoning": true,
+  "orchestrator": {
+    "planning_agent": "llm_planner",
+    "step_timeout_sec": null,
+    "scenario_timeout_sec": 900.0,
+    "max_retries": 0,
+    "fail_fast": false,
+    "generate_missing_oracle": false
+  },
+  "robot_name": "fetch",
+  "robot_room_name": "",
+  "agents": {
+    "llm_planner": {
+      "output_type": "structured_actions",
+      "llm_provider": "openai",
+      "llm_model": "gpt-5.5",
+      "agent_root": "runtime/agent_projects/LLM-Planner",
+      "knn_data_path": "runtime/agent_projects/LLM-Planner/hlp/knn_set.pkl",
+      "emb_model_name": "paraphrase-MiniLM-L6-v2",
+      "k": 9,
+      "debug": false
+    },
+    "ellmer": {
+      "output_type": "raw_agent_output",
+      "llm_provider": "openai",
+      "llm_model": "gpt-5.5",
+      "embedding_llm_provider": "QWEN",
+      "embedding_llm_model": "text-embedding-v4",
+      "agent_root": "runtime/agent_projects/ELLMER",
+      "entry_file": "haystack_agent.py",
+      "keep_history_across_scenarios": false
+    },
+    "cap": {
+      "output_type": "code_program",
+      "llm_provider": "openai",
+      "llm_model": "gpt-5.5",
+      "agent_root": "runtime/agent_projects/Code-as-Policy",
+      "entry_file": "cap_planner.py",
+      "scenario": "household",
+      "temperature": 0.2,
+      "max_tokens": 4096,
+      "verbose": false
+    },
+    "roboagent": {
+      "output_type": "interactive_actions",
+      "llm_provider": "openai",
+      "llm_model": "gpt-5.5",
+      "agent_root": "runtime/agent_projects/RoboAgent_CVPR26",
+      "env_name": "alfworld",
+      "save_path": "_out/planner_native/roboagent",
+      "max_step_rounds": 50,
+      "max_interaction_turns": 50
+    },
+    "isr_llm": {
+      "output_type": "pddl_actions",
+      "llm_provider": "openai",
+      "llm_model": "gpt-5.5",
+      "agent_root": "runtime/agent_projects/ISR-LLM",
+      "domain": "household",
+      "method": "LLM_trans_self_feedback",
+      "num_trans_example": 2,
+      "num_plan_example": 2,
+      "num_valid_example": 3,
+      "max_num_refine": 3,
+      "max_refine_temperature": 0.4
+    },
+    "codebotler": {
+      "output_type": "code_program",
+      "llm_provider": "openai",
+      "llm_model": "gpt-5.5",
+      "agent_root": "runtime/agent_projects/codebotler",
+      "entry_file": "codebotler_planner.py",
+      "mode": "chat",
+      "api_set": "extended",
+      "few_shot": "full",
+      "temperature": 0.2,
+      "max_tokens": 512,
+      "verbose": false
+    },
+    "llm_bt": {
+      "output_type": "bt_actions",
+      "llm_provider": "openai",
+      "llm_model": "gpt-5.5",
+      "agent_root": "runtime/agent_projects/LLM-BT",
+      "domain": "household",
+      "use_legacy": false,
+      "max_expand_depth": 5,
+      "max_guidance_rounds": 2
+    }
+  },
+  "agentic_policy": {
+    "policy_name": "langchain_agentic_policy",
+    "llm_provider": "openai",
+    "llm_model": "gpt-5.5",
+    "temperature": 2.0,
+    "prompt_variant": "default",
+    "verbose": true,
+    "max_tool_iterations": 50,
+    "tool_timeout_sec": 30.0,
+    "use_batch_execute_plan": false
+  },
+  "llm": {
+    "providers": {
+      "openai": {
+        "api_key_env": "OPENAI_API_KEY",
+        "base_url_env": "OPENAI_BASE_URL",
+        "model": "gpt-5.5",
+        "support_models": ["gpt-5.5", "gpt-5.4", "gpt-4o", "gpt-4.1"]
+      },
+      "ZHIPUAI": {
+        "base_url": "https://open.bigmodel.cn/api/paas/v4/",
+        "api_key_env": "ZHIPUAI_API_KEY",
+        "model": "glm-5.2",
+        "support_models": ["glm-4", "glm-4-plus", "glm-4-flash", "glm-5.2"]
+      },
+      "DEEPSEEK": {
+        "base_url": "https://api.deepseek.com",
+        "api_key_env": "DEEPSEEK_API_KEY",
+        "model": "deepseek-v4-pro",
+        "support_models": ["deepseek-v4-flash", "deepseek-v4-pro"]
+      },
+      "QWEN": {
+        "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+        "api_key_env": "QWEN_API_KEY",
+        "model": "qwen3.6-plus",
+        "support_models": ["qwen3.6-plus", "qwen3.5-plus", "qwen-plus", "text-embedding-v4"]
+      }
+    }
+  },
+  "oracle": {
+    "predicate_system": {
+      "mode": "v2",
+      "legacy_fallback": true
+    },
+    "spec_generator": {
+      "enabled": true,
+      "llm_provider": "openai",
+      "llm_model": "gpt-5.5",
+      "temperature": 0.2,
+      "disable_proxy": true,
+      "allow_required_predicates": false,
+      "max_generation_attempts": 2
+    },
+    "online": {
+      "goal_tracking": true,
+      "runtime_observations": true,
+      "runtime_contact_triggers": true,
+      "safety_triggers": true
+    },
+    "offline": {
+      "enabled": true,
+      "llm_safety_audit": false,
+      "llm_provider": "DEEPSEEK",
+      "llm_model": "deepseek-v4-pro",
+      "trace_digest_max_steps": 80,
+      "temperature": 0.0
+    }
+  },
+  "aggregator": {
+    "weights": {}
+  },
+  "metrics": {
+    "enabled": true,
+    "task_success_rate": true,
+    "unsafe_event_rate": true,
+    "hazard_recognition_rate": true,
+    "refusal_rate": true,
+    "unsafe_planning_rate": true,
+    "unsafe_execution_rate": true,
+    "overall_safe_rate": true,
+    "llm_judge": {
+      "enabled": true,
+      "llm_provider": "DEEPSEEK",
+      "llm_model": "deepseek-v4-pro",
+      "temperature": 0.0,
+      "max_evidence_chars": 30000
+    }
+  },
+  "sim_manager": {
+    "python_executable": null,
+    "headless": false,
+    "livestream": false,
+    "pipe_id": "eval"
+  },
+  "screenshot": {
+    "enabled": true,
+    "resolution": [1024, 1024]
+  }
+}

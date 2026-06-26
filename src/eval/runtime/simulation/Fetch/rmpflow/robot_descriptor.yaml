@@ -1,0 +1,56 @@
+api_version: 1.0
+
+cspace:
+    - shoulder_pan_joint
+    - shoulder_lift_joint
+    - upperarm_roll_joint
+    - elbow_flex_joint
+    - forearm_roll_joint
+    - wrist_roll_joint
+    - wrist_flex_joint
+
+root_link: base_link
+
+default_q: [
+    0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00
+]
+
+cspace_to_urdf_rules: []
+
+composite_task_spaces: []
+
+collision_spheres:
+  - shoulder_pan_link:
+    - "center": [0.122, -0.033, 0.065]
+      "radius": 0.05178
+    - "center": [0.0, 0.001, 0.002]
+      "radius": 0.05118
+  - shoulder_lift_link:
+    - "center": [-0.004, 0.036, -0.006]
+      "radius": 0.06516
+  - upperarm_roll_link:
+    - "center": [-0.029, -0.007, 0.004]
+      "radius": 0.0715
+    - "center": [0.12, -0.041, 0.007]
+      "radius": 0.06821
+  - elbow_flex_link:
+    - "center": [0.121, -0.012, 0.009]
+      "radius": 0.06193
+    - "center": [-0.007, 0.028, 0.005]
+      "radius": 0.05773
+  - forearm_roll_link:
+    - "center": [-0.012, 0.001, 0.001]
+      "radius": 0.05992
+    - "center": [0.131, -0.045, -0.007]
+      "radius": 0.05255
+  - wrist_flex_link:
+    - "center": [0.082, 0.001, 0.0]
+      "radius": 0.06132
+    - "center": [-0.0, 0.002, -0.0]
+      "radius": 0.06132
+  - wrist_roll_link:
+    - "center": [-0.009, 0.008, 0.001]
+      "radius": 0.03105
+  - gripper_link:
+    - "center": [-0.095, 0.002, 0.002]
+      "radius": 0.05349

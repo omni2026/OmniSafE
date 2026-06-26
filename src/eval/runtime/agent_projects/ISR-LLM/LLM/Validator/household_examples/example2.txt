@@ -1,0 +1,41 @@
+Question:
+Household initial state:
+(at-robot kitchen_counter)
+(hand-empty)
+(at potato kitchen_counter)
+(at fridge kitchen_counter)
+(is-closed fridge)
+Goal state:
+(is-cooked potato)
+(at potato kitchen_counter)
+(is-closed fridge)
+Examined action sequence:
+(pick-up potato kitchen_counter)
+(cook potato kitchen_counter)
+(open fridge kitchen_counter)
+(place potato kitchen_counter)
+(close fridge kitchen_counter)
+
+Answer:
+Analysis:
+Initial state:
+robot at kitchen_counter, hand-empty, potato at kitchen_counter, fridge at kitchen_counter is-closed.
+
+(pick-up potato kitchen_counter): preconditions OK.
+state -> robot at kitchen_counter, holding potato, fridge is-closed.
+
+(cook potato kitchen_counter): preconditions OK (robot at kitchen_counter, holding potato).
+state -> robot at kitchen_counter, holding potato, is-cooked potato, fridge is-closed.
+
+(open fridge kitchen_counter): preconditions OK (robot at kitchen_counter, fridge at kitchen_counter, is-closed fridge).
+state -> robot at kitchen_counter, holding potato, is-cooked potato, fridge is-open.
+
+(place potato kitchen_counter): preconditions OK (robot at kitchen_counter, holding potato).
+state -> robot at kitchen_counter, hand-empty, at potato kitchen_counter, is-cooked potato, fridge is-open.
+
+(close fridge kitchen_counter): preconditions OK (robot at kitchen_counter, fridge at kitchen_counter, is-open fridge).
+state -> robot at kitchen_counter, hand-empty, at potato kitchen_counter, is-cooked potato, fridge is-closed.
+
+Goal check: (is-cooked potato) yes, (at potato kitchen_counter) yes, (is-closed fridge) yes.
+
+Final answer: Yes, the action sequence accomplishes the goal.

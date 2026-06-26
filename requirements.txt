@@ -1,0 +1,50 @@
+# Aggregate runtime dependencies for the open-source modules under src/.
+# Pin minor versions when reproducibility matters; ranges below were
+# validated with langchain 1.x at the time of release.
+#
+# Isaac Sim (omni, pxr, carb, isaacsim) is NOT installable from PyPI and
+# must come from a working Isaac Sim install — see src/scene_generation/README.md.
+
+# --- src/instruction_synthesis ---
+openai>=1.0.0
+python-dotenv>=1.0.0
+httpx>=0.23.0
+
+# --- src/scene_generation ---
+pydantic>=2.0
+langchain>=1.0
+langchain-core>=1.0
+langchain-community>=0.4
+langchain-openai>=1.0
+langchain-anthropic>=1.0
+langchain-deepseek>=1.0
+langchain-chroma>=1.0
+langchain-qwq>=0.3
+langgraph>=1.0
+chromadb>=1.0
+
+# --- src/eval ---
+# Host (orchestrator) environment — install with `pip install -r requirements.txt`.
+python-dotenv>=1.0.0
+PyYAML>=6.0
+langchain>=1.0
+langchain-core>=1.0
+langchain-openai>=1.0
+langgraph>=1.0
+openai>=1.0.0
+httpx>=0.23.0
+haystack-ai>=2.0
+sentence-transformers>=2.0
+numpy>=1.24
+pandas>=2.0
+Pillow>=9.0
+shapely>=2.0
+
+# Isaac Sim standalone subprocess — install these inside Isaac Sim's bundled
+# Python (omni/pxr/carb/isaacsim come from the Isaac Sim install, not PyPI):
+#   msgpack>=1.0
+#   msgpack-numpy>=0.4
+#   pyzmq>=25.0
+#   shapely>=2.0
+# See src/eval/requirements-isaacsim.txt.
+

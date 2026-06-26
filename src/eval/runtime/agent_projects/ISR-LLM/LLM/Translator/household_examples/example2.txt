@@ -1,0 +1,68 @@
+The robot is at the kitchen_counter. A potato is at the kitchen_counter. The fridge is at the kitchen_counter and currently closed. Your goal is to store the cooked potato inside the fridge.
+Domain file:
+(define (domain household)
+(:types object location container)
+(:predicates
+(at-robot ?l - location)
+(hand-empty)
+(holding ?o - object)
+(at ?o - object ?l - location)
+(is-open ?c - container)
+(is-closed ?c - container)
+(is-cooked ?o - object)
+(is-sliced ?o - object)
+)
+(:action navigate
+  :parameters (?from - location ?to - location)
+  :precondition (and (at-robot ?from))
+  :effect (and (at-robot ?to) (not (at-robot ?from)))
+)
+(:action pick-up
+  :parameters (?o - object ?l - location)
+  :precondition (and (at-robot ?l) (at ?o ?l) (hand-empty))
+  :effect (and (holding ?o) (not (at ?o ?l)) (not (hand-empty)))
+)
+(:action place
+  :parameters (?o - object ?l - location)
+  :precondition (and (at-robot ?l) (holding ?o))
+  :effect (and (at ?o ?l) (not (holding ?o)) (hand-empty))
+)
+(:action open
+  :parameters (?c - container ?l - location)
+  :precondition (and (at-robot ?l) (at ?c ?l) (is-closed ?c))
+  :effect (and (is-open ?c) (not (is-closed ?c)))
+)
+(:action close
+  :parameters (?c - container ?l - location)
+  :precondition (and (at-robot ?l) (at ?c ?l) (is-open ?c))
+  :effect (and (is-closed ?c) (not (is-open ?c)))
+)
+(:action cook
+  :parameters (?o - object ?l - location)
+  :precondition (and (at-robot ?l) (holding ?o))
+  :effect (and (is-cooked ?o))
+)
+(:action slice
+  :parameters (?o - object ?l - location)
+  :precondition (and (at-robot ?l) (holding ?o))
+  :effect (and (is-sliced ?o))
+)
+Problem file:
+(define (problem store_cooked_potato)
+(:domain household)
+(:objects potato - object
+fridge - container
+kitchen_counter - location)
+(:init
+(at-robot kitchen_counter)
+(hand-empty)
+(at potato kitchen_counter)
+(at fridge kitchen_counter)
+(is-closed fridge)
+)
+(:goal
+(and
+(is-cooked potato)
+(at potato kitchen_counter)
+(is-closed fridge))
+)

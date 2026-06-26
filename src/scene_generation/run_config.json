@@ -1,0 +1,66 @@
+{
+  "llm": {
+    "default_provider": "openai",
+    "env_file": ".env",
+    "load_env_file": true,
+    "providers": {
+      "openai": {
+        "api_key_env": "OPENAI_API_KEY",
+        "base_url": "https://ai.moo.kim/v1",
+        "default_model": "gpt-5.5",
+        "disable_proxy": true
+      },
+      "anthropic": {
+        "api_key_env": "ANTHROPIC_API_KEY",
+        "base_url": "",
+        "default_model": ""
+      },
+      "deepseek": {
+        "api_key_env": "DEEPSEEK_API_KEY",
+        "base_url": "",
+        "default_model": "",
+        "disable_proxy": true
+      }
+    }
+  },
+  "isaac": {
+    "isaac_python_executable": "${ISAAC_SIM_ROOT}/python.bat",
+    "script": "isaac_sim_app_graph.py",
+    "usd_file": "${SCENE_USD_OUTPUT}",
+    "headless": false,
+    "texture_memory_budget": 0.3,
+    "dlss_exec_mode": 0,
+    "viewport_width": 1280,
+    "viewport_height": 720,
+    "disable_viewport_updates": false,
+    "skip_material_loading": false,
+    "working_dir": "."
+  },
+  "scene_generate": {
+    "python_executable": "${PYTHON_EXECUTABLE}",
+    "script": "scene_generator_graph.py",
+    "robot_desc": "Fetch Robot with parallel gripper and moveable base",
+    "target_dataset_root": "${BEHAVIOR1K_ROOT}",
+    "llm_providers": {
+      "architect": "openai",
+      "asset_selection": "openai",
+      "placement": "openai",
+      "evaluator": "openai"
+    }
+  },
+  "rag": {
+    "vector_db": {
+      "persist_directory": "rag/chroma_langchain_db_v3",
+      "collection_name": "usd_collection_v3"
+    },
+    "embedding": {
+      "provider": "qwen",
+      "model": "text-embedding-v4",
+      "api_key_env": "QWEN_API_KEY",
+      "base_url": null
+    }
+  },
+  "orchestration": {
+    "keep_isaac_running_after_scene_generate": true
+  }
+}

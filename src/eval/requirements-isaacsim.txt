@@ -1,0 +1,8 @@
+# Extra packages required inside Isaac Sim's bundled Python 3.11 environment.
+# Linux example:
+#   /path/to/isaac-sim/python.sh -m pip install -r requirements-isaacsim.txt
+
+msgpack==1.1.2
+msgpack-numpy==0.4.8
+pyzmq==27.1.0
+shapely==2.1.2

@@ -1,0 +1,2233 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    endTimeCode = 0
+    metersPerUnit = 1
+    startTimeCode = -1
+    timeCodesPerSecond = 60
+    upAxis = "Z"
+)
+
+def "Render" (
+    hide_in_stage_window = true
+    no_delete = true
+)
+{
+    def "OmniverseKit"
+    {
+        def "HydraTextures" (
+            hide_in_stage_window = true
+            no_delete = true
+        )
+        {
+            def RenderProduct "omni_kit_widget_viewport_ViewportTexture_0" (
+                prepend apiSchemas = ["OmniRtxSettingsCommonAdvancedAPI_1", "OmniRtxSettingsRtAdvancedAPI_1", "OmniRtxSettingsPtAdvancedAPI_1", "OmniRtxPostColorGradingAPI_1", "OmniRtxPostChromaticAberrationAPI_1", "OmniRtxPostBloomPhysicalAPI_1", "OmniRtxPostMatteObjectAPI_1", "OmniRtxPostCompositingAPI_1", "OmniRtxPostDofAPI_1", "OmniRtxPostMotionBlurAPI_1", "OmniRtxPostTvNoiseAPI_1", "OmniRtxPostTonemapIrayReinhardAPI_1", "OmniRtxPostDebugSettingsAPI_1", "OmniRtxDebugSettingsAPI_1"]
+                hide_in_stage_window = true
+                no_delete = true
+            )
+            {
+                rel camera = </OmniverseKit_Persp>
+                token omni:rtx:background:source:texture:textureMode = "repeatMirrored"
+                token omni:rtx:background:source:type = "domeLight"
+                bool omni:rtx:dlss:frameGeneration = 0
+                string omni:rtx:material:db:rtSensorNameToIdMap = "DefaultMaterial:0;AsphaltStandardMaterial:1;AsphaltWeatheredMaterial:2;VegetationGrassMaterial:3;WaterStandardMaterial:4;GlassStandardMaterial:5;FiberGlassMaterial:6;MetalAlloyMaterial:7;MetalAluminumMaterial:8;MetalAluminumOxidizedMaterial:9;PlasticStandardMaterial:10;RetroMarkingsMaterial:11;RetroSignMaterial:12;RubberStandardMaterial:13;SoilClayMaterial:14;ConcreteRoughMaterial:15;ConcreteSmoothMaterial:16;OakTreeBarkMaterial:17;FabricStandardMaterial:18;PlexiGlassStandardMaterial:19;MetalSilverMaterial:20"
+                bool omni:rtx:material:db:syncLoads = 1
+                token omni:rtx:post:dlss:execMode = "performance"
+                bool omni:rtx:post:registeredCompositing:invertColorCorrection = 1
+                bool omni:rtx:post:registeredCompositing:invertToneMap = 1
+                int omni:rtx:pt:clampSpp = 64
+                bool omni:rtx:pt:lightcache:cached:dontResolveConflicts = 1
+                int omni:rtx:pt:maxSamplesPerLaunch = 2073600
+                int omni:rtx:pt:maxVolumeBounces = 4
+                int omni:rtx:pt:mgpu:maxPixelsPerRegionExponent = 12
+                int omni:rtx:pt:samplesPerIteration = 64
+                int omni:rtx:pt:samplesPerPixel = 64
+                color3f omni:rtx:rt:ambientLight:color = (0.1, 0.1, 0.1)
+                bool omni:rtx:rt:demoire = 0
+                bool omni:rtx:rt:lightcache:spatialCache:dontResolveConflicts = 1
+                bool omni:rtx:scene:hydra:materialSyncLoads = 1
+                bool omni:rtx:scene:hydra:mdlMaterialWarmup = 1
+                uint omni:rtx:viewTile:limit = 4294967295
+                rel orderedVars = </Render/Vars/LdrColor>
+                custom bool overrideClipRange = 0
+                uniform int2 resolution = (1280, 720)
+            }
+        }
+    }
+
+    def RenderSettings "OmniverseGlobalRenderSettings" (
+        prepend apiSchemas = ["OmniRtxSettingsGlobalRtAdvancedAPI_1", "OmniRtxSettingsGlobalPtAdvancedAPI_1"]
+        no_delete = true
+    )
+    {
+        rel products = </Render/OmniverseKit/HydraTextures/omni_kit_widget_viewport_ViewportTexture_0>
+    }
+
+    def "Vars"
+    {
+        def RenderVar "LdrColor" (
+            hide_in_stage_window = true
+            no_delete = true
+        )
+        {
+            uniform string sourceName = "LdrColor"
+        }
+    }
+}
+
+def Xform "World"
+{
+    def DomeLight "DomeLight"
+    {
+        color3f inputs:color = (1, 1, 1)
+        float inputs:intensity = 2000
+    }
+
+    def Xform "GroundPlane" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </World/Looks/visual_material> (
+            bindMaterialAs = "strongerThanDescendants"
+        )
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Mesh "geom" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI", "PhysxCollisionAPI", "MaterialBindingAPI"]
+        )
+        {
+            uniform bool doubleSided = 1
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 2, 3]
+            rel material:binding:physics = </World/Physics_Materials/physics_material> (
+                bindMaterialAs = "strongerThanDescendants"
+            )
+            normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1)]
+            point3f[] points = [(-5000, -5000, 0), (5000, -5000, 0), (5000, 5000, 0), (-5000, 5000, 0)]
+            color3f[] primvars:displayColor = [(0, 0, 0)]
+            quatd xformOp:orient = (1, 0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def Plane "collisionPlane" (
+            prepend apiSchemas = ["PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            uniform token purpose = "guide"
+        }
+    }
+
+    def "Physics_Materials"
+    {
+        def Material "physics_material" (
+            prepend apiSchemas = ["PhysicsMaterialAPI"]
+        )
+        {
+            float physics:dynamicFriction = 0.5
+            float physics:restitution = 0.8
+            float physics:staticFriction = 0.5
+        }
+    }
+
+    def "Looks"
+    {
+        def Material "visual_material"
+        {
+            token outputs:surface.connect = </World/Looks/visual_material/shader.outputs:surface>
+
+            def Shader "shader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                float3 inputs:diffuseColor = (0.5, 0.5, 0.5)
+                token outputs:surface
+            }
+        }
+    }
+
+    def Camera "TopCamera"
+    {
+        float horizontalAperture = 20
+        float verticalAperture = 20
+        float3 xformOp:rotateXYZ = (-90, 0, 0)
+        double3 xformOp:translate = (0, 0, 20)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ"]
+    }
+
+    def Camera "SideCamera"
+    {
+        float horizontalAperture = 20
+        float verticalAperture = 20
+        float3 xformOp:rotateXYZ = (0, -90, 0)
+        double3 xformOp:translate = (20, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ"]
+    }
+
+    def Camera "MainCamera"
+    {
+        float horizontalAperture = 20
+        float verticalAperture = 20
+        float3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:translate = (0, 20, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ"]
+    }
+
+    def "rooms"
+    {
+        def "Kitchen" (
+            customData = {
+                string room_boundary_segments = "[[[0.0, 0.0], [6.0, 0.0]], [[0.0, 6.0], [6.0, 6.0]], [[0.0, 0.0], [0.0, 6.0]], [[6.0, 0.0], [6.0, 6.0]]]"
+            }
+        )
+        {
+            def Xform "wall_0" (
+                prepend references = @../assets/special/wall_usd_3/usd/asykgf.usd@
+            )
+            {
+                quatd xformOp:orient = (0.7071067811865477, 0, 0, 0.7071067811865474)
+                double3 xformOp:scale = (1.3687156438827515, 8.700799942016602, 1.1666666269302368)
+                double3 xformOp:translate = (3.0067856311798096, -5.098863109509466e-9, 1.2967947721481323)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                over "base_link" (
+                    delete apiSchemas = ["PhysicsRigidBodyAPI"]
+                )
+                {
+                    bool physics:rigidBodyEnabled = 0
+
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/wall_0/Looks/asykgf__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "asykgf__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+            }
+
+            def Xform "wall_1" (
+                prepend references = @../assets/special/wall_usd_3/usd/asykgf.usd@
+            )
+            {
+                quatd xformOp:orient = (0.7071067811865477, 0, 0, 0.7071067811865474)
+                double3 xformOp:scale = (1.3687156438827515, 8.700799942016602, 1.1666666269302368)
+                double3 xformOp:translate = (3.0067856311798096, 6, 1.2967947721481323)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                over "base_link" (
+                    delete apiSchemas = ["PhysicsRigidBodyAPI"]
+                )
+                {
+                    bool physics:rigidBodyEnabled = 0
+
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/wall_1/Looks/asykgf__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "asykgf__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+            }
+
+            def Xform "wall_2" (
+                prepend references = @../assets/special/wall_usd_3/usd/asykgf.usd@
+            )
+            {
+                quatd xformOp:orient = (1, 0, 0, 0)
+                double3 xformOp:scale = (1.3687156438827515, 8.700799942016602, 1.1666666269302368)
+                double3 xformOp:translate = (-5.098863109509466e-9, 2.9932143688201904, 1.2967947721481323)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                over "base_link" (
+                    delete apiSchemas = ["PhysicsRigidBodyAPI"]
+                )
+                {
+                    bool physics:rigidBodyEnabled = 0
+
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/wall_2/Looks/asykgf__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "asykgf__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+            }
+
+            def Xform "wall_3" (
+                prepend references = @../assets/special/wall_usd_3/usd/asykgf.usd@
+            )
+            {
+                quatd xformOp:orient = (1, 0, 0, 0)
+                double3 xformOp:scale = (1.3687156438827515, 8.700799942016602, 1.1666666269302368)
+                double3 xformOp:translate = (6, 2.9932143688201904, 1.2967947721481323)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                over "base_link" (
+                    delete apiSchemas = ["PhysicsRigidBodyAPI"]
+                )
+                {
+                    bool physics:rigidBodyEnabled = 0
+
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/wall_3/Looks/asykgf__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "asykgf__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+            }
+
+            def Cube "ceiling"
+            {
+                double size = 1
+                token visibility = "invisible"
+                float3 xformOp:scale = (6, 6, 0.1)
+                double3 xformOp:translate = (3, 3, 2.8499999999999996)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            }
+
+            def Xform "bottom_cabinet_1" (
+                prepend references = @../assets/objects/bottom_cabinet/xqmipa/usd/xqmipa.usd@
+            )
+            {
+                quatd xformOp:orient = (1, 0, 0, 0)
+                double3 xformOp:translate = (0.3691760003566742, 3.2518599033355713, 0.44552475214004517)
+
+                over "base_link" (
+                    prepend apiSchemas = ["PhysicsMassAPI"]
+                )
+                {
+                    float physics:mass = 10
+
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/bottom_cabinet_1/Looks/xqmipa__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "bottom_left_drawer"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/bottom_cabinet_1/Looks/xqmipa__bottom_left_drawer_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "bottom_right_drawer"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/bottom_cabinet_1/Looks/xqmipa__bottom_right_drawer_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "left_left_leaf"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/bottom_cabinet_1/Looks/xqmipa__left_left_leaf_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "left_right_leaf"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/bottom_cabinet_1/Looks/xqmipa__left_right_leaf_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "middle_left_drawer"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/bottom_cabinet_1/Looks/xqmipa__middle_left_drawer_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "middle_right_drawer"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/bottom_cabinet_1/Looks/xqmipa__middle_right_drawer_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "right_left_leaf"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/bottom_cabinet_1/Looks/xqmipa__right_left_leaf_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "right_right_leaf"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/bottom_cabinet_1/Looks/xqmipa__right_right_leaf_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "top_left_drawer"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/bottom_cabinet_1/Looks/xqmipa__top_left_drawer_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "top_right_drawer"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/bottom_cabinet_1/Looks/xqmipa__top_right_drawer_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "xqmipa__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "xqmipa__bottom_left_drawer_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "xqmipa__bottom_right_drawer_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "xqmipa__left_left_leaf_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "xqmipa__left_right_leaf_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "xqmipa__middle_left_drawer_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "xqmipa__middle_right_drawer_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "xqmipa__right_left_leaf_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "xqmipa__right_right_leaf_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "xqmipa__top_left_drawer_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "xqmipa__top_right_drawer_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+
+                over "meta__bottom_left_drawer_fillable_0_0_link"
+                {
+                }
+
+                over "meta__bottom_right_drawer_fillable_0_0_link"
+                {
+                }
+
+                over "meta__middle_left_drawer_fillable_0_0_link"
+                {
+                }
+
+                over "meta__middle_right_drawer_fillable_0_0_link"
+                {
+                }
+
+                over "meta__top_left_drawer_fillable_0_0_link"
+                {
+                }
+
+                over "meta__top_right_drawer_fillable_0_0_link"
+                {
+                }
+
+                over "meta__base_link_fillable_0_0_link"
+                {
+                }
+            }
+
+            def Xform "bottom_cabinet_2" (
+                prepend references = @../assets/objects/bottom_cabinet/kctcuj/usd/kctcuj.usd@
+            )
+            {
+                quatd xformOp:orient = (0.7071067811865477, 0, 0, 0.7071067811865474)
+                double3 xformOp:translate = (1.6855708360671997, 0.24024087190628052, 0.9965335130691528)
+
+                over "base_link" (
+                    prepend apiSchemas = ["PhysicsMassAPI"]
+                )
+                {
+                    float physics:mass = 10
+
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/bottom_cabinet_2/Looks/kctcuj__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "door1"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/bottom_cabinet_2/Looks/kctcuj__door1_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "glass1"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/bottom_cabinet_2/Looks/kctcuj__glass1_pbr>
+                    }
+                }
+
+                over "door2"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/bottom_cabinet_2/Looks/kctcuj__door2_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "glass2"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/bottom_cabinet_2/Looks/kctcuj__glass2_pbr>
+                    }
+                }
+
+                over "door3"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/bottom_cabinet_2/Looks/kctcuj__door3_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "glass3"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/bottom_cabinet_2/Looks/kctcuj__glass3_pbr>
+                    }
+                }
+
+                over "door4"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/bottom_cabinet_2/Looks/kctcuj__door4_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "glass4"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/bottom_cabinet_2/Looks/kctcuj__glass4_pbr>
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "kctcuj__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "kctcuj__door1_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "kctcuj__glass1_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "kctcuj__door2_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "kctcuj__glass2_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "kctcuj__door3_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "kctcuj__glass3_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "kctcuj__door4_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "kctcuj__glass4_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+
+                over "meta__base_link_fillable_0_0_link"
+                {
+                }
+            }
+
+            def Xform "bottom_cabinet_3" (
+                prepend references = @../assets/objects/bottom_cabinet/twhums/usd/twhums.usd@
+            )
+            {
+                quatd xformOp:orient = (0.7071067811865477, 0, 0, 0.7071067811865474)
+                double3 xformOp:translate = (2.452035903930664, 0.1728413999080658, 0.458840548992157)
+
+                over "base_link" (
+                    prepend apiSchemas = ["PhysicsMassAPI"]
+                )
+                {
+                    float physics:mass = 10
+
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/bottom_cabinet_3/Looks/twhums__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "link_0"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/bottom_cabinet_3/Looks/twhums__link_0_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "twhums__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "twhums__link_0_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+
+                over "meta__base_link_fillable_0_0_link"
+                {
+                }
+            }
+
+            def Xform "stove" (
+                prepend references = @../assets/objects/stove/qbjiva/usd/qbjiva.usd@
+            )
+            {
+                quatd xformOp:orient = (0.7071067811865477, 0, 0, 0.7071067811865474)
+                double3 xformOp:translate = (3.4611527919769287, 0.28173506259918213, 0.30259978771209717)
+
+                over "base_link"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/stove/Looks/qbjiva__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "link_0"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/stove/Looks/qbjiva__link_0_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "link_1"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/stove/Looks/qbjiva__link_1_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "link_2"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/stove/Looks/qbjiva__link_2_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "qbjiva__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "qbjiva__link_0_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "qbjiva__link_1_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "qbjiva__link_2_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+
+                over "meta__base_link_heatsource_fifth_0_link"
+                {
+                }
+
+                over "meta__base_link_heatsource_first_0_link"
+                {
+                }
+
+                over "meta__base_link_heatsource_fourth_0_link"
+                {
+                }
+
+                over "meta__base_link_heatsource_second_0_link"
+                {
+                }
+
+                over "meta__base_link_heatsource_third_0_link"
+                {
+                }
+
+                over "meta__base_link_togglebutton_fifth_0_link"
+                {
+                }
+
+                over "meta__base_link_togglebutton_first_0_link"
+                {
+                }
+
+                over "meta__base_link_togglebutton_fourth_0_link"
+                {
+                }
+
+                over "meta__base_link_togglebutton_second_0_link"
+                {
+                }
+
+                over "meta__base_link_togglebutton_third_0_link"
+                {
+                }
+            }
+
+            def Xform "oven" (
+                prepend references = @../assets/objects/oven/ffitak/usd/ffitak.usd@
+            )
+            {
+                quatd xformOp:orient = (0.7071067811865477, 0, 0, 0.7071067811865474)
+                double3 xformOp:translate = (4.722570896148682, 0.31327858567237854, 0.29242560267448425)
+
+                over "base_link"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/oven/Looks/ffitak__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "door"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/oven/Looks/ffitak__door_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "glass"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/oven/Looks/ffitak__glass_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "rack1"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/oven/Looks/ffitak__rack1_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "rack2"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/oven/Looks/ffitak__rack2_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "ffitak__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "ffitak__door_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "ffitak__glass_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "ffitak__rack1_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "ffitak__rack2_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+
+                over "meta__base_link_fillable_0_0_link"
+                {
+                }
+
+                over "meta__base_link_togglebutton_0_0_link"
+                {
+                }
+
+                over "meta__base_link_togglebutton_1_0_link"
+                {
+                }
+            }
+
+            def Xform "breakfast_table" (
+                prepend references = @../assets/objects/breakfast_table/lwtcfh/usd/lwtcfh.usd@
+            )
+            {
+                quatd xformOp:orient = (0.7071067811865477, 0, 0, 0.7071067811865474)
+                double3 xformOp:translate = (4.386897087097168, 4.235024452209473, 0.4429722726345062)
+
+                over "base_link"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/breakfast_table/Looks/lwtcfh__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "link_0"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/breakfast_table/Looks/lwtcfh__link_0_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "lwtcfh__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "lwtcfh__link_0_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+            }
+
+            def Xform "straight_chair" (
+                prepend references = @../assets/objects/straight_chair/jgoolz/usd/jgoolz.usd@
+            )
+            {
+                quatd xformOp:orient = (-0.7071067811865478, 0, 0, 0.7071067811865472)
+                double3 xformOp:translate = (4.728091716766357, 4.974684715270996, 0.32605263590812683)
+
+                over "base_link"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/straight_chair/Looks/jgoolz__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "jgoolz__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+            }
+
+            def Xform "top_cabinet_1" (
+                prepend references = @../assets/objects/top_cabinet/dhguym/usd/dhguym.usd@
+            )
+            {
+                quatd xformOp:orient = (-1.6081226496766366e-16, 0, 0, 1)
+                double3 xformOp:translate = (5.857316493988037, 3.000822067260742, 2.007106304168701)
+
+                over "base_link" (
+                    prepend apiSchemas = ["PhysicsMassAPI", "PhysxArticulationAPI", "PhysicsRigidBodyAPI", "PhysxRigidBodyAPI"]
+                )
+                {
+                    bool physics:kinematicEnabled = 1
+                    float physics:mass = 10
+                    bool physxArticulation:articulationEnabled = 0
+                    bool physxRigidBody:disableGravity = 1
+
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/top_cabinet_1/Looks/dhguym__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "link_1" (
+                    prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysxRigidBodyAPI"]
+                )
+                {
+                    bool physics:kinematicEnabled = 1
+                    bool physxRigidBody:disableGravity = 1
+
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/top_cabinet_1/Looks/dhguym__link_1_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "dhguym__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "dhguym__link_1_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+
+                over "meta__base_link_fillable_0_0_link" (
+                    prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysxRigidBodyAPI"]
+                )
+                {
+                    bool physics:kinematicEnabled = 1
+                    bool physxRigidBody:disableGravity = 1
+                }
+            }
+
+            def Xform "top_cabinet_2" (
+                prepend references = @../assets/objects/top_cabinet/dmwxyl/usd/dmwxyl.usd@
+            )
+            {
+                quatd xformOp:orient = (0.7071067811865477, 0, 0, 0.7071067811865474)
+                double3 xformOp:translate = (3.0004513263702393, 0.15088361501693726, 1.9044935703277588)
+
+                over "base_link" (
+                    prepend apiSchemas = ["PhysicsMassAPI", "PhysxArticulationAPI", "PhysicsRigidBodyAPI", "PhysxRigidBodyAPI"]
+                )
+                {
+                    bool physics:kinematicEnabled = 1
+                    float physics:mass = 10
+                    bool physxArticulation:articulationEnabled = 0
+                    bool physxRigidBody:disableGravity = 1
+
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/top_cabinet_2/Looks/dmwxyl__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "link_0" (
+                    prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysxRigidBodyAPI"]
+                )
+                {
+                    bool physics:kinematicEnabled = 1
+                    bool physxRigidBody:disableGravity = 1
+
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/top_cabinet_2/Looks/dmwxyl__link_0_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "link_1" (
+                    prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysxRigidBodyAPI"]
+                )
+                {
+                    bool physics:kinematicEnabled = 1
+                    bool physxRigidBody:disableGravity = 1
+
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/top_cabinet_2/Looks/dmwxyl__link_1_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "dmwxyl__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "dmwxyl__link_0_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "dmwxyl__link_1_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+
+                over "meta__base_link_fillable_0_0_link" (
+                    prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysxRigidBodyAPI"]
+                )
+                {
+                    bool physics:kinematicEnabled = 1
+                    bool physxRigidBody:disableGravity = 1
+                }
+            }
+
+            def Xform "painting" (
+                prepend references = @../assets/objects/painting/xxmpoi/usd/xxmpoi.usd@
+            )
+            {
+                quatd xformOp:orient = (-0.7071067811865478, 0, 0, 0.7071067811865472)
+                double3 xformOp:translate = (3, 5.911314964294434, 1.399999976158142)
+
+                over "base_link" (
+                    prepend apiSchemas = ["PhysxArticulationAPI", "PhysicsRigidBodyAPI", "PhysxRigidBodyAPI"]
+                )
+                {
+                    bool physics:kinematicEnabled = 1
+                    bool physxArticulation:articulationEnabled = 0
+                    bool physxRigidBody:disableGravity = 1
+
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/painting/Looks/xxmpoi__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "xxmpoi__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+            }
+
+            def Xform "openable_window" (
+                prepend references = @../assets/objects/openable_window/bxydsr/usd/bxydsr.usd@
+            )
+            {
+                quatd xformOp:orient = (1, 0, 0, 0)
+                double3 xformOp:translate = (0.09615238010883331, 3.0000112056732178, 1.811789631843567)
+
+                over "base_link" (
+                    prepend apiSchemas = ["PhysxArticulationAPI", "PhysicsRigidBodyAPI", "PhysxRigidBodyAPI"]
+                )
+                {
+                    bool physics:kinematicEnabled = 1
+                    bool physxArticulation:articulationEnabled = 0
+                    bool physxRigidBody:disableGravity = 1
+
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/openable_window/Looks/bxydsr__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "link_0" (
+                    prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysxRigidBodyAPI"]
+                )
+                {
+                    bool physics:kinematicEnabled = 1
+                    bool physxRigidBody:disableGravity = 1
+
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/openable_window/Looks/bxydsr__link_0_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "link_1" (
+                    prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysxRigidBodyAPI"]
+                )
+                {
+                    bool physics:kinematicEnabled = 1
+                    bool physxRigidBody:disableGravity = 1
+
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/openable_window/Looks/bxydsr__link_1_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "link_2" (
+                    prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysxRigidBodyAPI"]
+                )
+                {
+                    bool physics:kinematicEnabled = 1
+                    bool physxRigidBody:disableGravity = 1
+
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/openable_window/Looks/bxydsr__link_2_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "link_3" (
+                    prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysxRigidBodyAPI"]
+                )
+                {
+                    bool physics:kinematicEnabled = 1
+                    bool physxRigidBody:disableGravity = 1
+
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/openable_window/Looks/bxydsr__link_3_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "bxydsr__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "bxydsr__link_0_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "bxydsr__link_1_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "bxydsr__link_2_vray" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "bxydsr__link_3_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+            }
+
+            def Xform "room_light_1" (
+                customData = {
+                    bool nonphysical_floating_asset = 1
+                }
+                prepend references = @../assets/objects/room_light/dthvxn/usd/dthvxn.usd@
+            )
+            {
+                quatd xformOp:orient = (0.7071067811865477, 0, 0, 0.7071067811865474)
+                double3 xformOp:translate = (2.999992847442627, 2.999969482421875, 2.051302433013916)
+
+                over "base_link" (
+                    delete apiSchemas = ["PhysicsRigidBodyAPI"]
+                    prepend apiSchemas = ["PhysxArticulationAPI"]
+                )
+                {
+                    bool physics:rigidBodyEnabled = 0
+                    bool physxArticulation:articulationEnabled = 0
+
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/room_light_1/Looks/dthvxn__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+
+                    over "collisions"
+                    {
+                        over "dthvxn__base_link__collision__0" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "dthvxn__base_link__collision__1" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "dthvxn__base_link__collision__2" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "dthvxn__base_link__collision__3" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "dthvxn__base_link__collision__4" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "dthvxn__base_link__collision__5" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "dthvxn__base_link__collision__6" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "dthvxn__base_link__collision__7" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "dthvxn__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+
+                over "meta__base_link_lights_0_0_link" (
+                    delete apiSchemas = ["PhysicsRigidBodyAPI"]
+                )
+                {
+                    bool physics:rigidBodyEnabled = 0
+                }
+            }
+
+            def Xform "room_light_2" (
+                customData = {
+                    bool nonphysical_floating_asset = 1
+                }
+                prepend references = @../assets/objects/room_light/hqxyvs/usd/hqxyvs.usd@
+            )
+            {
+                quatd xformOp:orient = (0.7071067811865477, 0, 0, 0.7071067811865474)
+                double3 xformOp:translate = (2.9999966621398926, 1.6199991703033447, 1.9858818054199219)
+
+                over "base_link" (
+                    delete apiSchemas = ["PhysicsRigidBodyAPI"]
+                    prepend apiSchemas = ["PhysxArticulationAPI"]
+                )
+                {
+                    bool physics:rigidBodyEnabled = 0
+                    bool physxArticulation:articulationEnabled = 0
+
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/room_light_2/Looks/hqxyvs__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+
+                    over "collisions"
+                    {
+                        over "hqxyvs__base_link__collision__0" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__1" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__2" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__3" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__4" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__5" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__6" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__7" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__8" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__9" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__10" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__11" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__12" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__13" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__14" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__15" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__16" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__17" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__18" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__19" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__20" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__21" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__22" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__23" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__24" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__25" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__26" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__27" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__28" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__29" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__30" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+
+                        over "hqxyvs__base_link__collision__31" (
+                            delete apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            bool physics:collisionEnabled = 0
+                        }
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "hqxyvs__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+
+                over "meta__base_link_lights_0_0_link" (
+                    delete apiSchemas = ["PhysicsRigidBodyAPI"]
+                )
+                {
+                    bool physics:rigidBodyEnabled = 0
+                }
+            }
+
+            def Xform "room_ventilator" (
+                prepend references = @../assets/objects/room_ventilator/yvpfsq/usd/yvpfsq.usd@
+            )
+            {
+                quatd xformOp:orient = (0.7071067811865477, 0, 0, 0.7071067811865474)
+                double3 xformOp:translate = (4.38882303237915, 0.17735186219215393, 2.0276992321014404)
+
+                over "base_link" (
+                    prepend apiSchemas = ["PhysxArticulationAPI", "PhysicsRigidBodyAPI", "PhysxRigidBodyAPI"]
+                )
+                {
+                    bool physics:kinematicEnabled = 1
+                    bool physxArticulation:articulationEnabled = 0
+                    bool physxRigidBody:disableGravity = 1
+
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/room_ventilator/Looks/yvpfsq__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "yvpfsq__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+
+                over "meta__base_link_togglebutton_0_0_link" (
+                    prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysxRigidBodyAPI"]
+                )
+                {
+                    bool physics:kinematicEnabled = 1
+                    bool physxRigidBody:disableGravity = 1
+                }
+            }
+
+            def Xform "burner" (
+                prepend references = @../assets/objects/burner/pmntxh/usd/pmntxh.usd@
+            )
+            {
+                quatd xformOp:orient = (0.7071067811865477, 0, 0, 0.7071067811865474)
+                double3 xformOp:scale = (0.699999988079071, 0.699999988079071, 0.699999988079071)
+                double3 xformOp:translate = (3.573556423187256, 0.27881842851638794, 0.6248600482940674)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                over "base_link"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/burner/Looks/pmntxh__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "pmntxh__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+
+                over "meta__base_link_heatsource_0_0_link"
+                {
+                }
+
+                over "meta__base_link_togglebutton_0_0_link"
+                {
+                }
+            }
+
+            def Xform "toilet_paper" (
+                prepend references = @../assets/objects/toilet_paper/phrpmu/usd/phrpmu.usd@
+            )
+            {
+                quatd xformOp:orient = (0.7071067811865477, 0, 0, 0.7071067811865474)
+                double3 xformOp:translate = (0.431895911693573, 4.302758693695068, 0.9097670912742615)
+
+                over "base_link"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/toilet_paper/Looks/phrpmu__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "phrpmu__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+            }
+
+            def Xform "cap" (
+                prepend references = @../assets/objects/cap/hbafeb/usd/hbafeb.usd@
+            )
+            {
+                quatd xformOp:orient = (0.7071067811865477, 0, 0, 0.7071067811865474)
+                double3 xformOp:translate = (0.16142511367797852, 2.151427984237671, 0.857263445854187)
+
+                over "base_link"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/cap/Looks/hbafeb__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "hbafeb__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+
+                over "meta__base_link_attachment_hbafebparentM_0_link"
+                {
+                }
+            }
+
+            def Xform "skimmer" (
+                prepend references = @../assets/objects/skimmer/wvmcce/usd/wvmcce.usd@
+            )
+            {
+                quatd xformOp:orient = (0.7071067811865477, 0, 0, 0.7071067811865474)
+                double3 xformOp:translate = (0.43113183975219727, 2.2814102172851562, 0.8617770075798035)
+
+                over "base_link"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/skimmer/Looks/wvmcce__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "wvmcce__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+            }
+
+            def Xform "half_garlic_clove" (
+                prepend references = @../assets/objects/half_garlic_clove/msoqxk/usd/msoqxk.usd@
+            )
+            {
+                quatd xformOp:orient = (0.7071067811865477, 0, 0, 0.7071067811865474)
+                double3 xformOp:translate = (0.7104303240776062, 2.142481803894043, 0.8548320531845093)
+
+                over "base_link"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/half_garlic_clove/Looks/msoqxk__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "msoqxk__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+            }
+
+            def Xform "rag" (
+                prepend references = @../assets/objects/rag/oocmed/usd/oocmed.usd@
+            )
+            {
+                quatd xformOp:orient = (0.7071067811865477, 0, 0, 0.7071067811865474)
+                double3 xformOp:translate = (4.043509483337402, 4.063944339752197, 0.5554566383361816)
+
+                over "base_link"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/rag/Looks/oocmed__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "oocmed__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+            }
+
+            def Xform "plate" (
+                prepend references = @../assets/objects/plate/ivuveo/usd/ivuveo.usd@
+            )
+            {
+                quatd xformOp:orient = (0.7071067811865477, 0, 0, 0.7071067811865474)
+                double3 xformOp:translate = (4.741771221160889, 4.0582380294799805, 0.5629331469535828)
+
+                over "base_link"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/plate/Looks/ivuveo__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "ivuveo__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+
+                over "meta__base_link_fillable_0_0_link"
+                {
+                }
+            }
+
+            def Xform "sponge" (
+                prepend references = @../assets/objects/sponge/klwueh/usd/klwueh.usd@
+            )
+            {
+                quatd xformOp:orient = (0.7071067811865477, 0, 0, 0.7071067811865474)
+                double3 xformOp:translate = (3.9395670890808105, 4.521808624267578, 0.5652601718902588)
+
+                over "base_link"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/sponge/Looks/klwueh__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "klwueh__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+            }
+
+            def Xform "tissue_dispenser" (
+                prepend references = @../assets/objects/tissue_dispenser/rkljcx/usd/rkljcx.usd@
+            )
+            {
+                quatd xformOp:orient = (1, 0, 0, 0)
+                double3 xformOp:translate = (1.6943941116333008, 0.3041099011898041, 2.061497211456299)
+
+                over "base_link"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/tissue_dispenser/Looks/rkljcx__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "rkljcx__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+            }
+
+            def Xform "can" (
+                prepend references = @../assets/objects/can/damllm/usd/damllm.usd@
+            )
+            {
+                quatd xformOp:orient = (0.7071067811865477, 0, 0, 0.7071067811865474)
+                double3 xformOp:translate = (4.840056419372559, 0.2641572058200836, 0.8296311497688293)
+
+                over "base_link"
+                {
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/Kitchen/can/Looks/damllm__base_link_pbr>
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "damllm__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+
+                over "meta__base_link_attachment_myrzacparentF_0_link"
+                {
+                }
+            }
+        }
+
+        def "_whole_house"
+        {
+            def Xform "floor" (
+                prepend references = @../assets/special/floor_usd_2/usd/fpnxmg.usd@
+            )
+            {
+                quatd xformOp:orient = (1, 0, 0, 0)
+                double3 xformOp:scale = (2.8853795528411865, 4.828624725341797, 0.07204116135835648)
+                double3 xformOp:translate = (3, 3, -0.004999992903321981)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                over "base_link" (
+                    delete apiSchemas = ["PhysicsRigidBodyAPI"]
+                )
+                {
+                    bool physics:rigidBodyEnabled = 0
+
+                    over "collisions" (
+                        delete apiSchemas = ["PhysicsCollisionAPI"]
+                    )
+                    {
+                        bool physics:collisionEnabled = 0
+                    }
+
+                    over "visuals" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </World/rooms/_whole_house/floor/Looks/fpnxmg__base_link_pbr> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+
+                over "Looks"
+                {
+                    over "fpnxmg__base_link_vray" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+            }
+        }
+    }
+}
+
+def PhysicsScene "physicsScene" (
+    prepend apiSchemas = ["PhysxSceneAPI"]
+)
+{
+    vector3f physics:gravityDirection = (0, 0, -1)
+    float physics:gravityMagnitude = 9.81
+    uniform token physxScene:broadphaseType = "MBP"
+    bool physxScene:enableCCD = 1
+    bool physxScene:enableGPUDynamics = 0
+    bool physxScene:enableStabilization = 0
+    uniform token physxScene:solverType = "TGS"
+    uint physxScene:timeStepsPerSecond = 60
+}
+
+over "OmniverseKit_Persp"
+{
+    float horizontalAperture = 20
+    float verticalAperture = 20
+}
+

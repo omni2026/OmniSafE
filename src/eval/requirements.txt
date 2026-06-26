@@ -1,0 +1,22 @@
+# OMNISAFE Eval host environment (Python 3.11)
+# Install this file in the regular project virtual environment, not in the
+# Isaac Sim Python environment.
+
+# Configuration
+python-dotenv==1.2.2
+PyYAML==6.0.3
+
+# Agentic policy, oracle generation, and LLM-based metrics
+langchain==1.2.15
+langchain-openai==1.1.12
+openai==2.31.0
+
+# Planning-agent adapters
+# On a CUDA server, install the PyTorch build matching the server driver first;
+# sentence-transformers will otherwise select PyTorch from the default index.
+haystack-ai==2.27.0
+numpy==2.4.4
+pandas==3.0.2
+Pillow==12.2.0
+sentence-transformers==5.4.0
+shapely==2.1.2

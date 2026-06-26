@@ -17,6 +17,10 @@ The repository is organized around three stages:
 The stages can be used separately, but the expected workflow is:
 instruction synthesis -> scene generation -> evaluation.
 
+## Overview
+
+![OMNISAFE pipeline overview](pipeline-overview.png)
+
 ## Layout
 
 ```

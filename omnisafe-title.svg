@@ -1,11 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="170" viewBox="0 0 1120 170" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="150" viewBox="0 0 1080 150" role="img" aria-labelledby="title desc">
   <title id="title">OmniSafE</title>
   <desc id="desc">A scalable, fully-automated, end-to-end pipeline for Safety Evaluation of LLM-driven embodied agents.</desc>
-  <rect width="1120" height="170" fill="none"/>
-  <text x="560" y="72" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="68" font-weight="800">
+  <rect width="1080" height="150" fill="none"/>
+  <text x="540" y="62" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="60" font-weight="800">
     <tspan fill="#2563EB">Omni</tspan><tspan fill="#059669">Saf</tspan><tspan fill="#D97706">E</tspan>
   </text>
-  <text x="560" y="126" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="26" font-weight="650">
+  <text x="540" y="112" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="22" font-weight="650">
     <tspan fill="#94A3B8">A </tspan><tspan fill="#2563EB">scalable, fully-automated, end-to-end </tspan><tspan fill="#94A3B8">pipeline for </tspan><tspan fill="#059669">Safety </tspan><tspan fill="#D97706">Evaluation </tspan><tspan fill="#94A3B8">of LLM-driven embodied agents.</tspan>
   </text>
 </svg>

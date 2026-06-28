@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="omnisafe-title.svg" alt="OmniSafE: A scalable, fully-automated, end-to-end pipeline for Safety Evaluation of LLM-driven embodied agents." width="1000">
+<img src="omnisafe-title.svg" alt="OmniSafE: A scalable, fully-automated, end-to-end pipeline for Safety Evaluation of LLM-driven embodied agents.">
 
 <img src="pipeline-overview.png" alt="OMNISAFE pipeline overview" width="950">
 
